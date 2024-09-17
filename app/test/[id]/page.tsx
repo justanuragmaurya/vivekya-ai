@@ -10,7 +10,6 @@ import axios from 'axios';
 import { Loader2 } from 'lucide-react';
 
 interface Result {
-  id: string;
   name: string;
   email: string;
   score?: string;
@@ -96,7 +95,6 @@ export default function TestPage() {
       const coverLetter = localStorage.getItem('coverLetter');
 
       const updatedData: Result = {
-        id: params.id as string,
         name: name || '',
         email: email || '',
         score,

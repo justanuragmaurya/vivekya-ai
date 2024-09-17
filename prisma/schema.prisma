@@ -41,4 +41,6 @@ model Applicants {
   appliedAt DateTime @default(now())
   jobId String?
   job Jobs? @relation(fields: [jobId], references: [id])
+  phone String?
+  resume String?
 }
