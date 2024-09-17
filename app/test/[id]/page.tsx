@@ -13,12 +13,21 @@ interface Question {
   text: string;
 }
 
+interface TestReport {
+  score: string;
+  areas_to_improve: string;
+  overall_feeadback: string;
+  rating_out_of_5stars: number;
+}
+
 export default function TestPage() {
   const [questions, setQuestions] = useState<string[]>([])
   const [answers, setAnswers] = useState<string[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
+  const [marks, setmarks] = useState(null)
+  const [report, setReport] = useState<TestReport | null>(null);
   const params = useParams()
 
   useEffect(() => {
@@ -65,9 +74,16 @@ export default function TestPage() {
       question,
       answer: answers[index] || ''
     }));
-    const response = await axios.post('/api/submittest', { result })
-    console.log(response.data);
-    setLoading(false);
+    try {
+      const response = await axios.post('/api/submittest', { result })
+      setReport(response.data);
+      console.log(response.data);
+    } catch (error) {
+      console.error('Error submitting test:', error);
+      setError('Error submitting test');
+    } finally {
+      setLoading(false);
+    }
   }
 
   if (isLoading) return <div className="flex justify-center items-center h-screen">Loading...</div>
@@ -76,25 +92,43 @@ export default function TestPage() {
   return (
     <div className="container mx-auto py-8">
       <h1 className="text-3xl font-bold mb-6">Test Questions</h1>
-      <div className="space-y-4">
-        {questions.map((question, index) => (
-          <Card key={index}>
-            <CardHeader>
-              <CardTitle className="text-xl">Question {index + 1}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p>{question}</p>
-              <Textarea
-                placeholder="Your answer"
-                className="mt-2 h-32"
-                value={answers[index] || ''}
-                onChange={(e) => handleAnswerChange(index, e.target.value)}
-              />
-            </CardContent>  
-          </Card>
-        ))}
-      </div>
-      <Button className="mt-6" onClick={handleSubmit}>{loading ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> 'Submitting...'</> : 'Submit Test'}</Button>
+      {report ? (
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-xl">Test Report</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p>Your score: {report.score}</p>
+            <p>Areas to improve: {report.areas_to_improve}</p>
+            <p>Overall feedback: {report.overall_feeadback}</p>
+            <p>Rating: {report.rating_out_of_5stars}/5</p>
+          </CardContent>
+        </Card>
+      ) : (
+        <>
+          <div className="space-y-4">
+            {questions.map((question, index) => (
+              <Card key={index}>
+                <CardHeader>
+                  <CardTitle className="text-xl">Question {index + 1}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p>{question}</p>
+                  <Textarea
+                    placeholder="Your answer"
+                    className="mt-2 h-32"
+                    value={answers[index] || ''}
+                    onChange={(e) => handleAnswerChange(index, e.target.value)}
+                  />
+                </CardContent>  
+              </Card>
+            ))}
+          </div>
+          <Button className="mt-6 bg-green-500 hover:bg-green-600" onClick={handleSubmit}>
+            {loading ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Submitting...</> : 'Submit Test'}
+          </Button>
+        </>
+      )}
     </div>
   )
 }
