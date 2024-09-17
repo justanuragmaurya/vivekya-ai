@@ -42,7 +42,7 @@ export default function JobsPage() {
     fetchJobs()
   }, [])
 
-  if (isLoading) return <div className="flex flex-col items-center justify-center text-xl h-[calc(100vh-64)]"><p>Loading...</p></div>
+  if (isLoading) return <div className="flex flex-col items-center justify-center text-xl h-[calc(100vh-6)]"><p>Loading...</p></div>
   if (error) return <p>{error}</p>
   if (jobs.length === 0) return <p>No jobs available</p>
 
