@@ -46,9 +46,9 @@ function Navbar() {
         <Link href="/aboutus" className="font-semibold bg-clip-text text-transparent bg-gradient-to-b from-[#fafafa] to-[#c3c3c3]  hover:scale-105 transition-all">
           About Us
         </Link>
-        <Link href="Get Started">
+        <Link href="/login">
           <Button className="w-full lg:w-auto bg-neutral-200 hover:bg-neutral-300 hover:scale-105 transition-all  text-[#1a1a1a]">
-            Get Started
+            Login
           </Button>
         </Link>
       </div>

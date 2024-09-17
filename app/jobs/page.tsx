@@ -62,7 +62,8 @@ export default function JobsPage() {
 
 function JobCard({ id, title, description, requiredSkills, experienceLevel, jobType, location, salary, companyName, companyWebsite }: JobCardProps) {
   return (
-    <Card className="w-full">
+    <Card className="w-full flex flex-col justify-between">
+      <div>
       <CardHeader>
         <CardTitle className="text-xl">{title}</CardTitle>
         <CardDescription>{companyName}</CardDescription>
@@ -91,7 +92,8 @@ function JobCard({ id, title, description, requiredSkills, experienceLevel, jobT
           </div>
         </div>
       </CardContent>
-      <CardFooter className="flex justify-between">
+      </div>
+      <CardFooter className="flex justify-between ">
         <Link href={`/test/${id}`}><Button variant="outline">Apply Now</Button></Link>
         {companyWebsite && (
           <Button variant="ghost" asChild>
