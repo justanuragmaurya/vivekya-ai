@@ -42,12 +42,12 @@ export default function JobsPage() {
     fetchJobs()
   }, [])
 
-  if (isLoading) return <p>Loading...</p>
+  if (isLoading) return <div className="flex flex-col items-center justify-center text-xl h-[calc(100vh-64)]"><p>Loading...</p></div>
   if (error) return <p>{error}</p>
   if (jobs.length === 0) return <p>No jobs available</p>
 
   return (
-    <div className="container mx-auto py-8">
+    <div className="container mx-auto py-8 ">
       <h1 className="text-3xl font-bold mb-6">Available Jobs</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {jobs.map((job, index) => (
