@@ -22,7 +22,7 @@ export default function JobDetailsForm() {
   return (
     <div className='flex flex-col gap-4 items-center justify-center h-screen'>
         <div className='flex flex-col gap-2'>
-            <h2 className='text-2xl bg-gradient-to-b from-[#] to-[#fafafa] bg-clip-text text-transparent font-bold'>Enter The details :</h2>
+            <h2 className='text-2xl bg-gradient-to-b from-[#fafafa] to-[#c3c3c3]  bg-clip-text text-transparent font-bold'>Enter The details :</h2>
         </div>
     <form onSubmit={handleSubmit} className="space-y-6 max-w-2xl mx-auto p-6 text-[#0a0a0a] bg-white rounded-lg shadow">
       <div className="space-y-2">

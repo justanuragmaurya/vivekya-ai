@@ -3,6 +3,7 @@ import { Montserrat } from "next/font/google";
 import "./globals.css";
 import DotPattern from "@/components/magicui/dot-pattern";
 import { cn } from "@/lib/utils";
+import Navbar from "@/components/Navbar";
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -25,6 +26,7 @@ export default function RootLayout({
       <body
         className={`${montserrat.className} antialiased`}
       >
+        <Navbar />
         {children}
         <DotPattern
         width={20}
@@ -33,7 +35,7 @@ export default function RootLayout({
         cy={1}
         cr={1}
         className={cn(
-          "[mask-image:linear-gradient(to_bottom_right,white,transparent,transparent)] ",
+          "[mask-image:linear-gradient(to_bottom_right,white,transparent,transparent)] -z-10",
         )}
       />
       </body>
