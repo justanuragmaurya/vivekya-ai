@@ -34,9 +34,10 @@ model Applicants {
   id String @id @default(cuid())
   name String
   email String
-  phone String?
+  score String?
+  areasToImprove String?
+  ratingOutOf5Stars Int?
   coverLetter String?
-  resume String?
   appliedAt DateTime @default(now())
   jobId String?
   job Jobs? @relation(fields: [jobId], references: [id])

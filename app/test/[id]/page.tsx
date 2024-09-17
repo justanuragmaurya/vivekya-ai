@@ -9,6 +9,18 @@ import { Button } from '@/components/ui/button';
 import axios from 'axios';
 import { Loader2 } from 'lucide-react';
 
+interface Result {
+  id: string;
+  name: string;
+  email: string;
+  score?: string;
+  areasToImprove?: string;
+  ratingOutOf5Stars?: number;
+  coverLetter?: string;
+  appliedAt: Date;
+  jobId?: string;
+}
+
 interface Question {
   id: string;
   text: string;
@@ -17,7 +29,7 @@ interface Question {
 interface TestReport {
   score: string;
   areas_to_improve: string;
-  overall_feedback: string; // Corrected spelling
+  overall_feedback: string;
   rating_out_of_5stars: number;
 }
 
@@ -29,6 +41,7 @@ export default function TestPage() {
   const [loading, setLoading] = useState(false)
   const [marks, setmarks] = useState(null)
   const [report, setReport] = useState<TestReport | null>(null);
+  const [data, setData] = useState<Result | null>(null);
   const params = useParams()
 
   useEffect(() => {
@@ -76,9 +89,30 @@ export default function TestPage() {
       answer: answers[index] || ''
     }));
     try {
-      const response = await axios.post('/api/submittest', { result })
+      const response = await axios.post('/api/submittest', { result });
+      const { score, areas_to_improve, rating_out_of_5stars } = response.data;
+      const name = localStorage.getItem('name');
+      const email = localStorage.getItem('email');
+      const coverLetter = localStorage.getItem('coverLetter');
+
+      const updatedData: Result = {
+        id: params.id as string,
+        name: name || '',
+        email: email || '',
+        score,
+        areasToImprove: areas_to_improve,
+        ratingOutOf5Stars: rating_out_of_5stars,
+        coverLetter: coverLetter || '',
+        appliedAt: new Date(),
+        jobId: params.id as string,
+      };
+
+      setData(updatedData);
       setReport(response.data);
-      console.log(response.data);
+      console.log('Updated data:', updatedData);
+
+      const dbresponse = await axios.post('/api/postresult', { data: updatedData });
+      console.log('Database response:', dbresponse.data);
     } catch (error) {
       console.error('Error submitting test:', error);
       setError('Error submitting test');

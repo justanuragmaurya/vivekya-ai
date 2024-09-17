@@ -29,7 +29,11 @@ export default function UserLogin() {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault()
-        localStorage.setItem('applicantData', JSON.stringify(applicant))
+        // Store each field separately in localStorage
+        localStorage.setItem('name', applicant.name)
+        localStorage.setItem('email', applicant.email)
+        localStorage.setItem('phone', applicant.phone)
+        localStorage.setItem('coverLetter', applicant.coverLetter)
         toast({
             title: "Application submitted",
             description: "Your application has been submitted successfully",
