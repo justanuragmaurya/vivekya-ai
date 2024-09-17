@@ -4,8 +4,10 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { ExternalLinkIcon } from "lucide-react"
+import Link from "next/link"
 
 interface JobCardProps {
+  id: string; // Add this line
   title: string
   description: string
   requiredSkills: string[]
@@ -50,15 +52,15 @@ export default function JobsPage() {
     <div className="container mx-auto py-8 ">
       <h1 className="text-3xl font-bold mb-6">Available Jobs</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {jobs.map((job, index) => (
-          <JobCard key={index} {...job} />
+        {jobs.map((job) => (
+          <JobCard key={job.id} {...job} />
         ))}
       </div>
     </div>
   )
 }
 
-function JobCard({ title, description, requiredSkills, experienceLevel, jobType, location, salary, companyName, companyWebsite }: JobCardProps) {
+function JobCard({ id, title, description, requiredSkills, experienceLevel, jobType, location, salary, companyName, companyWebsite }: JobCardProps) {
   return (
     <Card className="w-full">
       <CardHeader>
@@ -90,7 +92,7 @@ function JobCard({ title, description, requiredSkills, experienceLevel, jobType,
         </div>
       </CardContent>
       <CardFooter className="flex justify-between">
-        <Button variant="outline">Apply Now</Button>
+        <Link href={`/test/${id}`}><Button variant="outline">Apply Now</Button></Link>
         {companyWebsite && (
           <Button variant="ghost" asChild>
             <a href={companyWebsite} target="_blank" rel="noopener noreferrer">
