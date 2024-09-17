@@ -13,8 +13,6 @@ function Navbar() {
     setIsMenuOpen(false);
   }, [pathname]);
 
-
-
   return (
     <div className="flex justify-between items-center px-4 sm:px-8 py-2 backdrop-blur-sm sticky top-0 z-10 text-white shadow-lg border-b-[0.5px] border-gray-600">
       <div className="">
