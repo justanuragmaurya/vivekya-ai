@@ -13,4 +13,31 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Jobs {
+  id String @id @default(cuid())
+  title String
+  description String
+  requiredSkills String[]
+  experienceLevel String
+  jobType String
+  location String
+  salary String
+  companyName String
+  companyWebsite String
+  createdAt DateTime @default(now())
+  questions String[]
+  applicants Applicants[]
+}
 
+
+model Applicants {
+  id String @id @default(cuid())
+  name String
+  email String
+  phone String?
+  coverLetter String?
+  resume String?
+  appliedAt DateTime @default(now())
+  jobId String?
+  job Jobs? @relation(fields: [jobId], references: [id])
+}

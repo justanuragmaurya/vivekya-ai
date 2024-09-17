@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Toaster } from "@/components/ui/toaster"
 import { Montserrat } from "next/font/google";
 import "./globals.css";
 import DotPattern from "@/components/magicui/dot-pattern";
@@ -38,6 +39,7 @@ export default function RootLayout({
           "[mask-image:linear-gradient(to_bottom_right,white,transparent,transparent)] -z-10",
         )}
       />
+      <Toaster />
       </body>
     </html>
   );
