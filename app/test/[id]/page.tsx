@@ -3,6 +3,10 @@
 import { useState, useEffect } from 'react'
 import { useParams } from 'next/navigation'
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Textarea } from '@/components/ui/textarea';
+import { Button } from '@/components/ui/button';
+import axios from 'axios';
+import { Loader2 } from 'lucide-react';
 
 interface Question {
   id: string;
@@ -11,14 +15,16 @@ interface Question {
 
 export default function TestPage() {
   const [questions, setQuestions] = useState<string[]>([])
+  const [answers, setAnswers] = useState<string[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [loading, setLoading] = useState(false)
   const params = useParams()
 
   useEffect(() => {
     async function fetchQuestions() {
       setIsLoading(true)
-      console.log('Fetching questions for job ID:', params.id) // Add this line
+      console.log('Fetching questions for job ID:', params.id) 
       try {
         const response = await fetch('/api/getQuestions', {
           method: 'POST',
@@ -28,14 +34,13 @@ export default function TestPage() {
           body: JSON.stringify({ id: params.id }),
         })
 
-        console.log('Response status:', response.status) // Add this line
-
+        console.log('Response status:', response.status)
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`)
         }
 
         const data = await response.json()
-        console.log('Fetched data:', data) // Add this line
+        console.log('Fetched data:', data) 
         setQuestions(data.questions)
       } catch (err) {
         setError('Error fetching questions')
@@ -47,6 +52,23 @@ export default function TestPage() {
 
     fetchQuestions()
   }, [params.id])
+
+  const handleAnswerChange = (index: number, value: string) => {
+    const newAnswers = [...answers];
+    newAnswers[index] = value;
+    setAnswers(newAnswers);
+  }
+
+  const handleSubmit = async() => {
+    setLoading(true);
+    const result = questions.map((question, index) => ({
+      question,
+      answer: answers[index] || ''
+    }));
+    const response = await axios.post('/api/submittest', { result })
+    console.log(response.data);
+    setLoading(false);
+  }
 
   if (isLoading) return <div className="flex justify-center items-center h-screen">Loading...</div>
   if (error) return <div className="flex justify-center items-center h-screen text-red-500">{error}</div>
@@ -62,10 +84,17 @@ export default function TestPage() {
             </CardHeader>
             <CardContent>
               <p>{question}</p>
-            </CardContent>
+              <Textarea
+                placeholder="Your answer"
+                className="mt-2 h-32"
+                value={answers[index] || ''}
+                onChange={(e) => handleAnswerChange(index, e.target.value)}
+              />
+            </CardContent>  
           </Card>
         ))}
       </div>
+      <Button className="mt-6" onClick={handleSubmit}>{loading ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> 'Submitting...'</> : 'Submit Test'}</Button>
     </div>
   )
 }
