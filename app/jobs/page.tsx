@@ -64,9 +64,12 @@ function JobCard({ id, title, description, requiredSkills, experienceLevel, jobT
   return (
     <Card className="w-full flex flex-col justify-between">
       <div>
-      <CardHeader>
+      <CardHeader className="flex flex-row justify-between space-y-0 pb-2">
+        <div>
         <CardTitle className="text-xl">{title}</CardTitle>
         <CardDescription>{companyName}</CardDescription>
+        </div>
+        <Link href={`/applicants/${id}`}><Button variant="outline" className="mt-4">View Applicants</Button></Link>
       </CardHeader>
       <CardContent className="space-y-4">
         <p className="text-sm text-muted-foreground">{description}</p>
