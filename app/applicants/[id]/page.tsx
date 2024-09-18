@@ -4,10 +4,9 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { UserIcon, MailIcon, StarIcon, TrendingUpIcon, FileTextIcon, CalendarIcon, BriefcaseIcon } from "lucide-react"
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { UserIcon, MailIcon, StarIcon, TrendingUpIcon, FileTextIcon, CalendarIcon } from "lucide-react"
 
-// Demo data array
+
 interface Application {
   name: string;
   email: string;
@@ -21,14 +20,11 @@ interface Application {
 
 function CompactApplicationCard({ application }: { application: Application }) {
   const { name, email, score, areasToImprove, ratingOutOf5Stars, coverLetter, appliedAt, jobId } = application
-
-  const appliedAtDate = new Date(appliedAt);
-
   return (
     <Card className="w-full max-w-md mb-4 hover:shadow-lg transition-shadow duration-300">
       <CardHeader className="pb-2">
         <CardTitle className="text-xl font-bold flex items-center space-x-2">
-          <UserIcon className="h-5 w-5 text-gray-500" />
+          <UserIcon className="h-5 w-5 text-gray-500 pb-5" />
           <span>{name}</span>
         </CardTitle>
       </CardHeader>
@@ -94,7 +90,8 @@ export default function Component(): React.ReactElement {
       setIsLoading(true);
       try {
         const response = await axios.get(`/api/fetchapplicants?jobId=${params.id}`);
-        setApplicants(response.data);
+        const sortedApplicants = response.data.sort((a: Application, b: Application) => b.score - a.score);
+        setApplicants(sortedApplicants);
       } catch (err) {
         setError('Error fetching applicants');
         console.error(err);
@@ -112,7 +109,7 @@ export default function Component(): React.ReactElement {
   return (
     <div className="space-y-4 p-4">
       <h1 className="text-2xl font-bold mb-4">Applicants for the Job</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 ">
         {applicants.map((applicant, index) => (
           <CompactApplicationCard key={index} application={applicant} />
         ))}

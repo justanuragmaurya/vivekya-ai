@@ -21,6 +21,8 @@ export default function UserLogin() {
         phone: '',
         coverLetter: ''
     })
+    
+    const [isSubmitted, setIsSubmitted] = useState(false)
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target
@@ -29,7 +31,6 @@ export default function UserLogin() {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault()
-        // Store each field separately in localStorage
         localStorage.setItem('name', applicant.name)
         localStorage.setItem('email', applicant.email)
         localStorage.setItem('phone', applicant.phone)
@@ -38,9 +39,19 @@ export default function UserLogin() {
             title: "Application submitted",
             description: "Your application has been submitted successfully",
         })
+        setIsSubmitted(true)
     }
 
-   return (
+    if (isSubmitted) {
+        return (
+            <div className='flex flex-col gap-4 items-center justify-center min-h-screen'>
+                <h1 className='text-2xl font-bold mb-4'>Thank you for registering!</h1>
+                <p>Your application has been received.</p>
+            </div>
+        )
+    }
+
+    return (
         <div className='flex flex-col gap-4 items-center justify-center min-h-screen'>
             <h1 className='text-2xl font-bold mb-4'>User Application</h1>
             <form onSubmit={handleSubmit} className="space-y-6 max-w-md w-full p-6 bg-white text-[#0a0a0a] rounded-lg shadow">
